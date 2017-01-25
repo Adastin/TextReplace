@@ -5,13 +5,15 @@ import java.util.StringTokenizer;
 
 public class Sentence{
     private ArrayList<Word> words = new ArrayList<>();
-    private String tail = "";
+    private String tail = ""; // . ! ?
+
     public Sentence(String text){
-        StringTokenizer tokenizer = new StringTokenizer(text, " ,", true);
+        StringTokenizer tokenizer = new StringTokenizer(text, " ,\"«»", true);
         while (tokenizer.hasMoreTokens()){
             words.add(new Word(tokenizer.nextToken()));
         }
     }
+
     public Sentence (String text, String tail){
         this(text);
         this.tail = tail;
@@ -27,8 +29,8 @@ public class Sentence{
     public String toString() {
         String s = "";
         if(!words.isEmpty()){
-            for(int i = 0; i < words.size(); i++){
-                s += words.get(i).toString();
+            for(Word w : words){
+                s += w.toString();
             }
         }
         return s + tail + " ";

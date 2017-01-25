@@ -4,23 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class TextReplace {
-    ArrayList<Sentence> sentences = new ArrayList<>();
-    int k;
+    List<Sentence> sentences = new ArrayList<>();
     String text;
-    String ch;
 
-    public TextReplace(String text, int k, String ch){
+    public TextReplace(String text){
         this.text = text;
-        this.k = k;
-        this.ch = ch;
-        StringTokenizer tokenizer = new StringTokenizer(text, ".!?", true);
-        while (tokenizer.hasMoreTokens()){
-            String txt = tokenizer.nextToken().trim();
-            if(tokenizer.hasMoreTokens()){
-                String tail = tokenizer.nextToken();
+        StringTokenizer token = new StringTokenizer(text, ".!?", true);
+        while (token.hasMoreTokens()){
+            String txt = token.nextToken().trim();
+            if(token.hasMoreTokens()){
+                String tail = token.nextToken();
                 sentences.add(new Sentence(txt, tail));
             } else{
                 sentences.add(new Sentence(txt));
@@ -28,7 +25,7 @@ public class TextReplace {
         }
     }
 
-    public void replace(){
+    public void replace(int k, String ch){
         for (Sentence s : sentences){
             s.replace(k, ch);
         }
@@ -43,13 +40,21 @@ public class TextReplace {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter value of k: ");
-        int k = Integer.parseInt((reader.readLine()));
-        System.out.print("Enter the character: ");
+        int k;
+        while (true){
+            k = Integer.parseInt((reader.readLine()));
+            if(k > 0){
+                break;
+            }
+            System.out.print("Value of k must be greater than 0. Please, try again: ");
+        }
+        System.out.print("Enter character: ");
         String ch = reader.readLine();
         System.out.println("Enter text");
         String text = reader.readLine();
-        TextReplace textReplace = new TextReplace(text, k, ch);
-        textReplace.replace();
+        reader.close();
+        TextReplace textReplace = new TextReplace(text);
+        textReplace.replace(k, ch);
         textReplace.print();
     }
 }
